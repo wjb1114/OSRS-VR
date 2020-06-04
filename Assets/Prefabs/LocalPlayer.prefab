@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3416609311275620544}
   - component: {fileID: 8898370233162400827}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,6 +141,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   username: 
+  health: 0
+  maxHealth: 100
+  model: {fileID: 3416609311275620544}
 --- !u!114 &9159050697932328471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55e7f73b95bd05042a94f7efd2155eb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camTransform: {fileID: 4829861873617894492}
 --- !u!1 &3876529555026005670
 GameObject:
   m_ObjectHideFlags: 0
