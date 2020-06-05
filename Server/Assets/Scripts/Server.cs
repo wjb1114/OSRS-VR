@@ -5,6 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles routing of network traffic and server properties
+/// </summary>
+
 public class Server
 {
     public static int MaxPlayers { get; private set; }
@@ -15,6 +19,12 @@ public class Server
 
     private static TcpListener tcpListener;
     private static UdpClient udpListener;
+
+    /// <summary>
+    /// Starts server and opens application to incoming connections
+    /// </summary>
+    /// <param name="_maxPlayers">Max number of players in the scene</param>
+    /// <param name="_port">Port that is listening for network traffic</param>
 
     public static void Start(int _maxPlayers, int _port)
     {
@@ -34,6 +44,11 @@ public class Server
         Debug.Log($"Server started on {Port}.");
     }
 
+    /// <summary>
+    /// Callback that handles initial TCP connection from new client instance
+    /// </summary>
+    /// <param name="_result">Result of initial connection attempt</param>
+
     private static void TCPConnectCallback(IAsyncResult _result)
     {
         TcpClient _client = tcpListener.EndAcceptTcpClient(_result);
@@ -52,6 +67,11 @@ public class Server
 
         Debug.Log($"{_client.Client.RemoteEndPoint} failed to connect: Server Full!");
     }
+
+    /// <summary>
+    /// Callback that handles initial UDP connection from new client instance
+    /// </summary>
+    /// <param name="_result">Result of initial connection attempt</param>
 
     private static void UDPReceiveCallback(IAsyncResult _result)
     {
@@ -93,6 +113,12 @@ public class Server
         }
     }
 
+    /// <summary>
+    /// Sends UDP packet to specific client
+    /// </summary>
+    /// <param name="_clientEndPoint">Client endpoint that will receive packet data</param>
+    /// <param name="_packet">Packet containing data to be sent</param>
+
     public static void SendUDPData(IPEndPoint _clientEndPoint, Packet _packet)
     {
         try
@@ -107,6 +133,10 @@ public class Server
             Debug.Log($"Error reading data to {_clientEndPoint} via UDP: {_ex}");
         }
     }
+
+    /// <summary>
+    /// Opens connection slots and sets dictionary containing client packets
+    /// </summary>
 
     private static void InitializeServerData()
     {
@@ -123,6 +153,10 @@ public class Server
         };
         Debug.Log("Packets initialized.");
     }
+
+    /// <summary>
+    /// Stops listening for all UDP and TCP traffic
+    /// </summary>
 
     public static void Stop()
     {

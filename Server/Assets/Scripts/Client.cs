@@ -5,6 +5,10 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
+/// <summary>
+/// Reference to a connected client application
+/// </summary>
+
 public class Client
 {
     public static int dataBufferSize = 4096;
@@ -21,6 +25,10 @@ public class Client
         udp = new UDP(id);
     }
 
+    /// <summary>
+    /// Represents a TCP connection attached to the parent Client object
+    /// </summary>
+
     public class TCP
     {
         public TcpClient socket;
@@ -34,6 +42,11 @@ public class Client
         {
             id = _id;
         }
+
+        /// <summary>
+        /// Set up initial TCP connection 
+        /// </summary>
+        /// <param name="_socket">TCP Client to be used for connection</param>
 
         public void Connect(TcpClient _socket)
         {
@@ -51,6 +64,11 @@ public class Client
             ServerSend.Welcome(id, "Welcome to the server.");
         }
 
+        /// <summary>
+        /// Send a packet via TCP using a Network Stream
+        /// </summary>
+        /// <param name="_packet">Packet to be sent via TCP</param>
+
         public void SendData(Packet _packet)
         {
             try
@@ -65,6 +83,11 @@ public class Client
                 Debug.Log($"Error sending data to player {id} via TCP: {_ex}");
             }
         }
+
+        /// <summary>
+        /// Called whenever a TCP packet is received, begings read actions
+        /// </summary>
+        /// <param name="_result">Incoming stream passed from callback</param>
 
         private void ReceiveCallback(IAsyncResult _result)
         {
@@ -90,6 +113,12 @@ public class Client
                 Server.clients[id].Disconnect();
             }
         }
+
+        /// <summary>
+        /// Handles incoming TCP packets using packet dictionary and methods in Packet.cs
+        /// </summary>
+        /// <param name="_data">Byte array containing contents of the packet</param>
+        /// <returns></returns>
 
         private bool HandleData(byte[] _data)
         {
@@ -138,6 +167,10 @@ public class Client
             return false;
         }
 
+        /// <summary>
+        /// Terminates TCP connection when a player disconnects, allowing a new player to take the connection slot
+        /// </summary>
+
         public void Disconnect()
         {
             socket.Close();
@@ -147,6 +180,10 @@ public class Client
             socket = null;
         }
     }
+
+    /// <summary>
+    /// represents a UDP connection attached to the parent Client object
+    /// </summary>
 
     public class UDP
     {
@@ -158,15 +195,30 @@ public class Client
             id = _id;
         }
 
+        /// <summary>
+        /// Initializes UDP connection
+        /// </summary>
+        /// <param name="_endPoint">Endpoint used for the duration of the connection</param>
+
         public void Connect(IPEndPoint _endPoint)
         {
             endPoint = _endPoint;
         }
 
+        /// <summary>
+        /// Sends data via UDP packet to client
+        /// </summary>
+        /// <param name="_packet">Data to be sent</param>
+
         public void SendData(Packet _packet)
         {
             Server.SendUDPData(endPoint, _packet);
         }
+
+        /// <summary>
+        /// Handles initial read of incoming packet
+        /// </summary>
+        /// <param name="_packetData">Data received from client</param>
 
         public void HandleData(Packet _packetData)
         {
@@ -183,11 +235,20 @@ public class Client
             });
         }
 
+        /// <summary>
+        /// terminates the current UDP connection
+        /// </summary>
+
         public void Disconnect()
         {
             endPoint = null;
         }
     }
+
+    /// <summary>
+    /// Initializes new player in game environment and sets up client initialization packet
+    /// </summary>
+    /// <param name="_playerName"></param>
 
     public void SendIntoGame(string _playerName)
     {
@@ -213,6 +274,10 @@ public class Client
             }
         }
     }
+
+    /// <summary>
+    /// Terminates TCP and UDP connections and sends disconnect packet to all other connected players
+    /// </summary>
 
     private void Disconnect()
     {

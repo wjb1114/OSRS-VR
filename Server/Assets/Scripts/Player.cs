@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Representation of player object in server scene
+/// </summary>
+
 public class Player : MonoBehaviour
 {
     public int id;
@@ -17,12 +21,22 @@ public class Player : MonoBehaviour
     private bool[] inputs;
     private float yVelocity = 0;
 
+    /// <summary>
+    /// Initialize uniform player values
+    /// </summary>
+
     private void Start()
     {
         gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
         moveSpeed *= Time.fixedDeltaTime;
         jumpSpeed *= Time.fixedDeltaTime;
     }
+
+    /// <summary>
+    /// Initializes new player and assigns default initial values
+    /// </summary>
+    /// <param name="_id"></param>
+    /// <param name="_username"></param>
 
     public void Initialize(int _id, string _username)
     {
@@ -32,6 +46,10 @@ public class Player : MonoBehaviour
 
         inputs = new bool[5];
     }
+
+    /// <summary>
+    /// handles player movement input in server authoritative way
+    /// </summary>
 
     public void FixedUpdate()
     {
@@ -60,6 +78,11 @@ public class Player : MonoBehaviour
         Move(_inputDirection);
     }
 
+    /// <summary>
+    /// Takes player input and moves player accordingly
+    /// </summary>
+    /// <param name="_inputDirection">Vector2 representing new position of player</param>
+
     private void Move(Vector2 _inputDirection)
     {
 
@@ -83,11 +106,22 @@ public class Player : MonoBehaviour
         ServerSend.PlayerRotation(this);
     }
 
+    /// <summary>
+    /// Sets inputs and rotation of player
+    /// </summary>
+    /// <param name="_inputs">Array of bools representing input keys pressed this tick</param>
+    /// <param name="_rotation">Quaternion representing current player rotation</param>
+
     public void SetInput(bool[] _inputs, Quaternion _rotation)
     {
         inputs = _inputs;
         transform.rotation = _rotation;
     }
+
+    /// <summary>
+    /// Deals damage to other player
+    /// </summary>
+    /// <param name="_viewDirection">Direction player is facing used to determine if shot hits</param>
 
     public void Shoot(Vector3 _viewDirection)
     {
@@ -99,6 +133,11 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// handles player taking damage when being shot
+    /// </summary>
+    /// <param name="_damage">Amount of health removed from target</param>
 
     public void TakeDamage(float _damage)
     {
@@ -119,6 +158,11 @@ public class Player : MonoBehaviour
 
         ServerSend.PlayerHealth(this);
     }
+
+    /// <summary>
+    /// Respawns player
+    /// </summary>
+    /// <returns>Waits for respawn time before sending player back into game world</returns>
 
     private IEnumerator Respawn()
     {

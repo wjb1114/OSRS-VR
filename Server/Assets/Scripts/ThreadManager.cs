@@ -3,11 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles multithreading actions and ensures actions are sent to the main thread, when necessary
+/// </summary>
+
 public class ThreadManager : MonoBehaviour
 {
     private static readonly List<Action> executeOnMainThread = new List<Action>();
     private static readonly List<Action> executeCopiedOnMainThread = new List<Action>();
     private static bool actionToExecuteOnMainThread = false;
+
+    /// <summary>
+    /// Calls new server tick actions
+    /// </summary>
 
     private void FixedUpdate()
     {

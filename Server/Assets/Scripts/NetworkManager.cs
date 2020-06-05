@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Primary manager for server setup and player spawning
+/// </summary>
+
 public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager instance;
 
     public GameObject playerPrefab;
+
+    /// <summary>
+    /// Singleton implementation
+    /// </summary>
 
     private void Awake()
     {
@@ -21,6 +29,10 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts server and sets timing
+    /// </summary>
+
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
@@ -28,10 +40,19 @@ public class NetworkManager : MonoBehaviour
         Server.Start(16, 26950);
     }
 
+    /// <summary>
+    /// Safe shutdown of server environment
+    /// </summary>
+
     private void OnApplicationQuit()
     {
         Server.Stop();
     }
+
+    /// <summary>
+    /// Creates new player based on incoming connection
+    /// </summary>
+    /// <returns>New player reference in server scene</returns>
 
     public Player InstantiatePlayer()
     {
