@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// handles change sto user interface
+/// </summary>
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
     public GameObject startMenu;
     public InputField usernameField;
+
+    /// <summary>
+    /// Singleton initialization
+    /// </summary>
 
     private void Awake()
     {
@@ -22,6 +30,10 @@ public class UIManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+    /// <summary>
+    /// Sets up initial server connection
+    /// </summary>
 
     public void ConnectToServer()
     {

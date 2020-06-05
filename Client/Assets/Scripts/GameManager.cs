@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages current local game state
+/// </summary>
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -10,6 +14,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject localPlayerPrefab;
     public GameObject playerPrefab;
+
+    /// <summary>
+    /// Singleton initialization
+    /// </summary>
 
     private void Awake()
     {
@@ -23,6 +31,14 @@ public class GameManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+    /// <summary>
+    /// Spawn player in local scene
+    /// </summary>
+    /// <param name="_id">Player Id for reference by server logic</param>
+    /// <param name="_username">Player entered username</param>
+    /// <param name="_position">Position of player</param>
+    /// <param name="_rotation">Rotation of player</param>
 
     public void SpawnPlayer(int _id, string _username, Vector3 _position, Quaternion _rotation)
     {

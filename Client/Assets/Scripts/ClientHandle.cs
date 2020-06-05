@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
+/// <summary>
+/// Handles incoming packets from server
+/// </summary>
+
 public class ClientHandle : MonoBehaviour
 {
+    /// <summary>
+    /// Sends message indicating server connection was successful
+    /// </summary>
+    /// <param name="_packet">Packet from server</param>
+
     public static void Welcome(Packet _packet)
     {
         string _msg = _packet.ReadString();
@@ -17,6 +26,11 @@ public class ClientHandle : MonoBehaviour
         Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
     }
 
+    /// <summary>
+    /// Spawns player in local scene
+    /// </summary>
+    /// <param name="_packet">Packet containing initialization data</param>
+
     public static void SpawnPlayer(Packet _packet)
     {
         int _id = _packet.ReadInt();
@@ -27,6 +41,11 @@ public class ClientHandle : MonoBehaviour
         GameManager.instance.SpawnPlayer(_id, _username, _position, _rotation);
     }
 
+    /// <summary>
+    /// Handles updates to player position from server for all players
+    /// </summary>
+    /// <param name="_packet">Packet containing new position information</param>
+
     public static void PlayerPosition(Packet _packet)
     {
         int _id = _packet.ReadInt();
@@ -34,6 +53,11 @@ public class ClientHandle : MonoBehaviour
 
         GameManager.players[_id].transform.position = _position;
     }
+
+    /// <summary>
+    /// Handles updates to player rotation from server for all players except one sending rotation
+    /// </summary>
+    /// <param name="_packet">Packet containing new rotation information</param>
 
     public static void PlayerRotation(Packet _packet)
     {
@@ -43,6 +67,11 @@ public class ClientHandle : MonoBehaviour
         GameManager.players[_id].transform.rotation = _rotation;
     }
 
+    /// <summary>
+    /// Handles packets conatining disconnect data from other clients
+    /// </summary>
+    /// <param name="_packet">Packet containing data with disconnected player information</param>
+
     public static void PlayerDisconnected(Packet _packet)
     {
         int _id = _packet.ReadInt();
@@ -51,6 +80,11 @@ public class ClientHandle : MonoBehaviour
         GameManager.players.Remove(_id);
     }
 
+    /// <summary>
+    /// Updates player health for all other players
+    /// </summary>
+    /// <param name="_packet">Packet conatining updated health information</param>
+
     public static void PlayerHealth(Packet _packet)
     {
         int _id = _packet.ReadInt();
@@ -58,6 +92,11 @@ public class ClientHandle : MonoBehaviour
 
         GameManager.players[_id].SetHealth(_health);
     }
+
+    /// <summary>
+    /// Updates other player data when a player respawns
+    /// </summary>
+    /// <param name="_packet">Packet containing respawn data</param>
 
     public static void PlayerRespawned(Packet _packet)
     {

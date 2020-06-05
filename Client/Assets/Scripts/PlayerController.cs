@@ -5,6 +5,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Transform camTransform;
+
+    /// <summary>
+    /// Checks for new shots fired
+    /// </summary>
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -12,10 +17,19 @@ public class PlayerController : MonoBehaviour
             ClientSend.PlayerShoot(camTransform.forward);
         }
     }
+
+    /// <summary>
+    /// Sends movement data to server every tick
+    /// </summary>
+
     private void FixedUpdate()
     {
         SendInputToServer();
     }
+
+    /// <summary>
+    /// Reads player input and prepares packet for server
+    /// </summary>
 
     private void SendInputToServer()
     {

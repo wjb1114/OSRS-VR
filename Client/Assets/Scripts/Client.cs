@@ -5,6 +5,10 @@ using System.Net;
 using System.Net.Sockets;
 using System;
 
+/// <summary>
+/// representation of current client and its state
+/// </summary>
+
 public class Client : MonoBehaviour
 {
     public static Client instance;
@@ -21,6 +25,10 @@ public class Client : MonoBehaviour
     private delegate void PacketHandler(Packet _packet);
     private static Dictionary<int, PacketHandler> packetHandlers;
 
+    /// <summary>
+    /// Singleton implementation
+    /// </summary>
+
     private void Awake()
     {
         if (instance == null)
@@ -34,16 +42,28 @@ public class Client : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes TCP and UDP connection instances
+    /// </summary>
+
     private void Start()
     {
         tcp = new TCP();
         udp = new UDP();
     }
 
+    /// <summary>
+    /// Forces server disconnect if the application is closed
+    /// </summary>
+
     private void OnApplicationQuit()
     {
         Disconnect();
     }
+
+    /// <summary>
+    /// Sets up initial connection to server
+    /// </summary>
 
     public void ConnectToServer()
     {
@@ -274,6 +294,11 @@ public class Client : MonoBehaviour
             socket = null;
         }
     }
+
+    /// <summary>
+    /// Initializes dictionary of possible incoming packets
+    /// </summary>
+
     private void InitializeClientData()
     {
         packetHandlers = new Dictionary<int, PacketHandler>()

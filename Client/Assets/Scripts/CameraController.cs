@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// First person camera controller
+/// </summary>
+
 public class CameraController : MonoBehaviour
 {
     public PlayerManager player;
@@ -11,11 +15,19 @@ public class CameraController : MonoBehaviour
     private float verticalRotation;
     private float horizontalRotation;
 
+    /// <summary>
+    /// Sets initial view to defaults
+    /// </summary>
+
     private void Start()
     {
         verticalRotation = transform.localEulerAngles.x;
         horizontalRotation = transform.localEulerAngles.y;
     }
+
+    /// <summary>
+    /// Listens for changes to view mode. Currently draws ray in game scene for debugging
+    /// </summary>
 
     private void Update()
     {
@@ -31,6 +43,10 @@ public class CameraController : MonoBehaviour
         Debug.DrawRay(transform.position, transform.forward * 2, Color.red);
     }
 
+    /// <summary>
+    /// handles change sto rotation
+    /// </summary>
+
     private void Look()
     {
         float _mouseVertical = -Input.GetAxis("Mouse Y");
@@ -44,6 +60,10 @@ public class CameraController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
         player.transform.rotation = Quaternion.Euler(0f, horizontalRotation, 0f);
     }
+
+    /// <summary>
+    /// Toggles from view change and mouse movement during gameplay for debugging purposes
+    /// </summary>
 
     private void ToggleCursorMode()
     {

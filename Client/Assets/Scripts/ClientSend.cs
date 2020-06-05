@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class ClientSend : MonoBehaviour
 {
+
+    /// <summary>
+    /// Sends TCP packet to server
+    /// </summary>
+    /// <param name="_packet">Packet to be sent</param>
+
     private static void SendTCPData(Packet _packet)
     {
         _packet.WriteLength();
         Client.instance.tcp.SendData(_packet);
     }
+
+    /// <summary>
+    /// Sends UDP packet to server
+    /// </summary>
+    /// <param name="_packet">Packet to be sent</param>
 
     private static void SendUDPData(Packet _packet)
     {
@@ -17,6 +28,11 @@ public class ClientSend : MonoBehaviour
     }
 
     #region Packets
+
+    /// <summary>
+    /// Sends confirmation of new connection
+    /// </summary>
+
     public static void WelcomeReceived()
     {
         using (Packet _packet = new Packet((int)ClientPackets.welcomeReceived))
@@ -27,6 +43,11 @@ public class ClientSend : MonoBehaviour
             SendTCPData(_packet);
         }
     }
+
+    /// <summary>
+    /// Sends player inputs to update movement
+    /// </summary>
+    /// <param name="_inputs">Array of bool values indicating what inputs were entered this tick</param>
 
     public static void PlayerMovement(bool[] _inputs)
     {
@@ -42,6 +63,11 @@ public class ClientSend : MonoBehaviour
             SendUDPData(_packet);
         }
     }
+
+    /// <summary>
+    /// Sends aim information for shooting another player
+    /// </summary>
+    /// <param name="_facing">Direction player is facing</param>
 
     public static void PlayerShoot(Vector3 _facing)
     {
