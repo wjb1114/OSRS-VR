@@ -9,6 +9,8 @@
 
 ### All geometry must be places in both the client and server  scenes, and must have the EXACT SAME coordinates and rotation values
 
+### Make sure you are creating branches for your commits. I am working on getting CI sett up, so wewill be using pull requests to merge into the master branch
+
 # Breakdown of current scripts (more information available in code comments)
 
 ## Server
