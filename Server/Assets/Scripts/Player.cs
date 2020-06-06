@@ -135,6 +135,22 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
+    /// Toggles state of targeted object
+    /// </summary>
+    /// <param name="_viewDirection">Direction player is facing used to determine what object to toggle, if any</param>
+
+    public void Toggle(Vector3 _viewDirection)
+    {
+        if (Physics.Raycast(shootOrigin.position, _viewDirection, out RaycastHit _hit, 25f))
+        {
+            if (_hit.collider.CompareTag("BasicObject"))
+            {
+                _hit.collider.GetComponent<BasicObject>().ToggleObjectState();
+            }
+        }
+    }
+
+    /// <summary>
     /// handles player taking damage when being shot
     /// </summary>
     /// <param name="_damage">Amount of health removed from target</param>

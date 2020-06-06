@@ -57,4 +57,17 @@ public class ServerHandle
 
         Server.clients[_fromClient].player.Shoot(_shootDirection);
     }
+
+    /// <summary>
+    /// Handles toggling state of object in scene
+    /// </summary>
+    /// <param name="_fromClient">Client whose player has triggered a state change</param>
+    /// <param name="_packet">Packet containing new state data</param>
+
+    public static void ToggleBasicObject(int _fromClient, Packet _packet)
+    {
+        Vector3 _aimDirection = _packet.ReadVector3();
+
+        Server.clients[_fromClient].player.Toggle(_aimDirection);
+    }
 }
