@@ -48,7 +48,7 @@ public class Client
         /// </summary>
         /// <param name="_socket">TCP Client to be used for connection</param>
 
-        public void Connect(TcpClient _socket)
+        public void Connect(TcpClient _socket, Dictionary<string, BasicObject> _objects)
         {
             socket = _socket;
             socket.ReceiveBufferSize = dataBufferSize;
@@ -62,6 +62,9 @@ public class Client
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
 
             ServerSend.Welcome(id, "Welcome to the server.");
+
+            ServerSend.AllObjectPosition(id, _objects);
+            ServerSend.AllObjectRotation(id, _objects);
         }
 
         /// <summary>
@@ -246,7 +249,7 @@ public class Client
     }
 
     /// <summary>
-    /// Initializes new player in game environment and sets up client initialization packet
+    /// Initializes new player in game environment, sets object states across scene, and sets up client initialization packet
     /// </summary>
     /// <param name="_playerName"></param>
 

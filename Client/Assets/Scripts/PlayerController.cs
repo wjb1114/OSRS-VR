@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
         {
             ClientSend.PlayerShoot(camTransform.forward);
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ClientSend.ToggleBasicObject(camTransform.forward);
+        }
     }
 
     /// <summary>

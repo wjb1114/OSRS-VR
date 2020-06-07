@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();
+    public static Dictionary<string, BasicObjectController> basicObjects = new Dictionary<string, BasicObjectController>();
 
     public GameObject localPlayerPrefab;
     public GameObject playerPrefab;
@@ -54,5 +55,50 @@ public class GameManager : MonoBehaviour
 
         _player.GetComponent<PlayerManager>().Initialize(_id, _username);
         players.Add(_id, _player.GetComponent<PlayerManager>());
+    }
+
+    /// <summary>
+    /// Sets initial state of objects in scene
+    /// </summary>
+    /// <param name="_id">Object unique string id</param>
+    /// <param name="_isActive">Bool representing current state</param>
+    /// <param name="_position">Position of object in initial state</param>
+    public void SetInitialObjectPosition(string _id, bool _isActive, Vector3 _position)
+    {
+        if (basicObjects.Count < 1)
+        {
+            InitializeBasicObjects();
+        }
+        basicObjects[_id].transform.position = _position;
+        basicObjects[_id].isActive = _isActive;
+    }
+
+    /// <summary>
+    /// Sets initial state of objects in scene
+    /// </summary>
+    /// <param name="_id">Object unique string id</param>
+    /// <param name="_isActive">Bool representing current state</param>
+    /// <param name="_rotation">Rotation of object in initial state</param>
+
+    public void SetInitialObjectRotation(string _id, bool _isActive, Quaternion _rotation)
+    {
+        if (basicObjects.Count < 1)
+        {
+            InitializeBasicObjects();
+        }
+        basicObjects[_id].transform.rotation = _rotation;
+        basicObjects[_id].isActive = _isActive;
+    }
+
+    /// <summary>
+    /// Populates dictionary of objects
+    /// </summary>
+
+    void InitializeBasicObjects()
+    {
+        foreach (BasicObjectController item in UnityEngine.Object.FindObjectsOfType(typeof(BasicObjectController)))
+        {
+            basicObjects.Add(item.identifier, item);
+        }
     }
 }

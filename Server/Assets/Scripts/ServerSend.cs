@@ -165,6 +165,38 @@ public class ServerSend
     }
 
     /// <summary>
+    /// Set position of object
+    /// </summary>
+    /// <param name="_object">Object to reposition</param>
+
+    public static void ObjectPosition(BasicObject _object)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.objectPosition))
+        {
+            _packet.Write(_object.id);
+            _packet.Write(_object.currentPosition);
+
+            SendTCPDataToAll(_packet);
+        }
+    }
+
+    /// <summary>
+    /// Set rotation of object
+    /// </summary>
+    /// <param name="_object">Object to rotate</param>
+
+    public static void ObjectRotation(BasicObject _object)
+    {
+        using (Packet _packet = new Packet((int)ServerPackets.objectRotation))
+        {
+            _packet.Write(_object.id);
+            _packet.Write(_object.currentRotation);
+
+            SendTCPDataToAll(_packet);
+        }
+    }
+
+    /// <summary>
     /// Builds packet to indicate a player has disconnected
     /// </summary>
     /// <param name="_playerId">Id of disconnected player</param>
@@ -205,6 +237,48 @@ public class ServerSend
             _packet.Write(_player.id);
 
             SendTCPDataToAll(_packet);
+        }
+    }
+
+    /// <summary>
+    /// Set initial position values for all objects in scene for newly connected client
+    /// </summary>
+    /// <param name="_id">Id of client to receive packets</param>
+    /// <param name="_objects">Dictionary of object whose states need to be sent</param>
+
+    public static void AllObjectPosition(int _id, Dictionary<string, BasicObject> _objects)
+    {
+        foreach (var item in _objects)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.objectInitialPosition))
+            {
+                _packet.Write(item.Key);
+                _packet.Write(item.Value.isActive);
+                _packet.Write(item.Value.currentPosition);
+
+                SendTCPData(_id, _packet);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Set initial rotation values for all objects in scene for newly connected client
+    /// </summary>
+    /// <param name="_id">Id of client to receive packets</param>
+    /// <param name="_objects">Dictionary of object whose states need to be sent</param>
+
+    public static void AllObjectRotation(int _id, Dictionary<string, BasicObject> _objects)
+    {
+        foreach (var item in _objects)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.objectInitialRotation))
+            {
+                _packet.Write(item.Key);
+                _packet.Write(item.Value.isActive);
+                _packet.Write(item.Value.currentRotation);
+
+                SendTCPData(_id, _packet);
+            }
         }
     }
 }
