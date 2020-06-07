@@ -3,6 +3,8 @@
 
 ## OSRS VR Server and Client applications built in Unity 2019.2.9f1
 
+### When committing code, please create a new feature branch. When you are ready to merge, please merge into the staging branch via Pull Request. Staging will be merged into Master after testing has confirmed completeness of new functionality.
+
 ### Please ensure all high importance data is sent via TCP and all data that is constinuously sent (ie. player position) is sent via UDP
 
 ### All scene specific items MUST be saved as a prefab to prevent merging issues. Please contact me if you need a non-prefab object added to the repository scenes

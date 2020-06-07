@@ -14,6 +14,7 @@ public class Server
     public static int MaxPlayers { get; private set; }
     public static int Port { get; private set; }
     public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
+    public static Dictionary<string, BasicObject> basicObjects = new Dictionary<string, BasicObject>();
     public delegate void PacketHandler(int _fromClient, Packet _packet);
     public static Dictionary<int, PacketHandler> packetHandlers;
 
@@ -42,6 +43,11 @@ public class Server
         udpListener.BeginReceive(UDPReceiveCallback, null);
 
         Debug.Log($"Server started on {Port}.");
+
+        foreach(BasicObject obj in UnityEngine.Object.FindObjectsOfType(typeof(BasicObject)))
+        {
+            basicObjects.Add(obj.id, obj);
+        }
     }
 
     /// <summary>
@@ -60,7 +66,8 @@ public class Server
         {
             if (clients[i].tcp.socket == null)
             {
-                clients[i].tcp.Connect(_client);
+                clients[i].tcp.Connect(_client, basicObjects);
+                
                 return;
             }
         }
@@ -149,7 +156,8 @@ public class Server
         {
             { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
             { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
-            { (int)ClientPackets.playerShoot, ServerHandle.PlayerShoot }
+            { (int)ClientPackets.playerShoot, ServerHandle.PlayerShoot },
+            { (int)ClientPackets.toggleBasicObject, ServerHandle.ToggleBasicObject }
         };
         Debug.Log("Packets initialized.");
     }

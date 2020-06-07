@@ -55,6 +55,32 @@ public class ClientHandle : MonoBehaviour
     }
 
     /// <summary>
+    /// Updates position of object on state change
+    /// </summary>
+    /// <param name="_packet">Packet containing new state information</param>
+
+    public static void ObjectPosition(Packet _packet)
+    {
+        string _id = _packet.ReadString();
+        Vector3 _position = _packet.ReadVector3();
+
+        GameManager.basicObjects[_id].transform.position = _position;
+    }
+
+    /// <summary>
+    /// Updates rotation of object on state change
+    /// </summary>
+    /// <param name="_packet">Packet containing new state information</param>
+
+    public static void ObjectRotation(Packet _packet)
+    {
+        string _id = _packet.ReadString();
+        Quaternion _rotation = _packet.ReadQuaternion();
+
+        GameManager.basicObjects[_id].transform.rotation = _rotation;
+    }
+
+    /// <summary>
     /// Handles updates to player rotation from server for all players except one sending rotation
     /// </summary>
     /// <param name="_packet">Packet containing new rotation information</param>
@@ -103,5 +129,31 @@ public class ClientHandle : MonoBehaviour
         int _id = _packet.ReadInt();
 
         GameManager.players[_id].Respawn();
+    }
+
+    /// <summary>
+    /// Sets initial position of all objects in client scene when a new client connects
+    /// </summary>
+    /// <param name="_packet">Packet containing object position data</param>
+
+    public static void InitialObjectPosition(Packet _packet)
+    {
+        string _id = _packet.ReadString();
+        bool _isActive = _packet.ReadBool();
+        Vector3 _position = _packet.ReadVector3();
+        GameManager.instance.SetInitialObjectPosition(_id, _isActive, _position);
+    }
+
+    /// <summary>
+    /// Sets initial rotation of all objects in client scene when a new client connects
+    /// </summary>
+    /// <param name="_packet">Packet containing object rotation data</param>
+
+    public static void InitialObjectRotation(Packet _packet)
+    {
+        string _id = _packet.ReadString();
+        bool _isActive = _packet.ReadBool();
+        Quaternion _rotation = _packet.ReadQuaternion();
+        GameManager.instance.SetInitialObjectRotation(_id, _isActive, _rotation);
     }
 }

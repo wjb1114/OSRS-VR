@@ -78,5 +78,20 @@ public class ClientSend : MonoBehaviour
             SendTCPData(_packet);
         }
     }
+
+    /// <summary>
+    /// Sends aim information for toggling interactive objects
+    /// </summary>
+    /// <param name="_facing">Direction player is facing</param>
+
+    public static void ToggleBasicObject(Vector3 _facing)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.toggleBasicObject))
+        {
+            _packet.Write(_facing);
+
+            SendTCPData(_packet);
+        }
+    }
     #endregion
 }
